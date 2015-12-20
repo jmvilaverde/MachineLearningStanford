@@ -13,9 +13,12 @@ J = 0;
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
 
+H = X*theta; %calculate h value
+D = H-y; %diference between h(theta) - y for each element
+P2 = D .^ 2; %calculate power 2 of each element
+S = sum(P2); %sum of all elements
 
-
-
+J = (1/(2*m))*S; %cost function value
 
 % =========================================================================
 

@@ -26,14 +26,11 @@ sigma = zeros(1, size(X, 2));
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
 
+mu = mean(X) % Get mean (mu) for each column X
 
+sigma = std(X) %Get std (sigma (max - min)) for each column X
 
-
-
-
-
-
-
+X_norm = (X - mu) ./ sigma
 % ============================================================
 
 end
