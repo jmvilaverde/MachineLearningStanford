@@ -79,12 +79,14 @@ i = i + (length<0);                                            % count epochs?!
 s = -df1;                                        % search direction is steepest
 d1 = -s'*s;                                                 % this is the slope
 z1 = red/(1-d1);                                  % initial step is red/(|s|+1)
+%z1 = red./(1-d1);                                  % initial step is red/(|s|+1)
 
 while i < abs(length)                                      % while not finished
   i = i + (length>0);                                      % count iterations?!
 
   X0 = X; f0 = f1; df0 = df1;                   % make a copy of current values
   X = X + z1*s;                                             % begin line search
+%  X = X + z1*s';                                             % begin line search
   [f2 df2] = eval(argstr);
   i = i + (length<0);                                          % count epochs?!
   d2 = df2'*s;
@@ -120,6 +122,7 @@ while i < abs(length)                                      % while not finished
       break;                                                          % failure
     end
     A = 6*(f2-f3)/z3+3*(d2+d3);                      % make cubic extrapolation
+%    A = 6*(f2-f3)./z3+3*(d2+d3);                      % make cubic extrapolation
     B = 3*(f3-f2)-z3*(d3+2*d2);
     z2 = -d2*z3*z3/(B+sqrt(B*B-A*d2*z3*z3));        % num. error possible - ok!
     if ~isreal(z2) || isnan(z2) || isinf(z2) || z2 < 0 % num prob or wrong sign?
