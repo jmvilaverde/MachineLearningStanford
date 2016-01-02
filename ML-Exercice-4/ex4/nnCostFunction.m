@@ -39,6 +39,44 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 %
+
+%add aditional theta column
+completeX = [ones(size(X,1),1) X];
+
+%calculate sigmoid for hidden layer
+a2 = sigmoid(completeX*Theta1');
+
+%add aditional theta column
+a2 = [ones(size(a2,1),1) a2];
+
+% Get sigmoid per final layer
+h = sigmoid(a2*Theta2');
+
+% Transform y, creating an matrix of zeros and setting
+% the 1 value depending on y value position
+
+transY = zeros(size(y,1), size(Theta2,1));
+
+for i = 1:size(y,1)
+
+  transY(i, y(i,:)) = 1;
+
+endfor
+
+
+% Calculate Cost
+%J = (1/m) * sum(sum( ((-transY).*log(h)) - ((1-transY).*log(1-h)) ));
+
+%Implement Regularized cost
+
+J = (1/m) * sum(sum( ((-transY).*log(h)) - ((1-transY).*log(1-h)) )) + ( (lambda/(2*m)) * ( sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)) ))
+
+% grad = ( (1/m) * sum((h-y).*X) );
+% grad = ((1/m) * ( X'*(h-y) ))  + ((lambda/m).*theta');
+%grad = ( (1/m) * sum((h-y).*X) ) + ((lambda/m).*theta');
+%grad(1) = (1/m) * (X(:,1)'.*(h-y));
+%grad(1) = (1/m) * sum((h-y)'*X(:,1));
+
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
