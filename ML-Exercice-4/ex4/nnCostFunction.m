@@ -71,12 +71,6 @@ endfor
 
 J = (1/m) * sum(sum( ((-transY).*log(h)) - ((1-transY).*log(1-h)) )) + ( (lambda/(2*m)) * ( sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)) ))
 
-% grad = ( (1/m) * sum((h-y).*X) );
-% grad = ((1/m) * ( X'*(h-y) ))  + ((lambda/m).*theta');
-%grad = ( (1/m) * sum((h-y).*X) ) + ((lambda/m).*theta');
-%grad(1) = (1/m) * (X(:,1)'.*(h-y));
-%grad(1) = (1/m) * sum((h-y)'*X(:,1));
-
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
@@ -92,6 +86,52 @@ J = (1/m) * sum(sum( ((-transY).*log(h)) - ((1-transY).*log(1-h)) )) + ( (lambda
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+
+%D1 = zeros(size(a2,2)-1,size(X,2));
+%D2 = zeros(size(h,2),size(a2,2)-1);
+
+D1 = zeros(size(a2,2)-1,size(X,2)+1);
+D2 = zeros(size(h,2),size(a2,2));
+
+%one iteration per example
+for t = 1:m
+  % value per each layer
+  a_1 = completeX(t,:);
+  a_2 = a2(t,:);
+  a_3 = h(t,:);
+  ym  = transY(t,:);
+
+  %get delta 3, check if a3 and y contains the same values per each case
+  delta3 = (a_3 - ym)';
+  
+  delta2 = Theta2' * delta3;%
+  %remove 0 elements bias
+  delta2 = delta2(2:end);
+  delta2 = delta2' .* sigmoidGradient(a_1*Theta1');
+    
+  %D1 = D1 + delta2'*a_1(:,2:end);
+  D1 = D1 + delta2'*a_1;
+  %size(delta2')
+  %size(a_1)
+  %size(D1)
+  
+  %D2 = D2 + delta3*a_2(:,2:end);
+  D2 = D2 + delta3*a_2;
+
+endfor
+
+finalD1 = (1/m) * D1;
+%size(finalD1)
+finalD2 = (1/m) * D2;
+%size(finalD2)
+
+%Theta1_grad = [zeros(size(finalD1,1),1) finalD1];
+%Theta2_grad = [zeros(size(finalD2,1),1) finalD2];
+
+Theta1_grad = finalD1;
+Theta2_grad = finalD2;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
