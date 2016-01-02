@@ -90,7 +90,7 @@ J = (1/m) * sum(sum( ((-transY).*log(h)) - ((1-transY).*log(1-h)) )) + ( (lambda
 %D1 = zeros(size(a2,2)-1,size(X,2));
 %D2 = zeros(size(h,2),size(a2,2)-1);
 
-D1 = zeros(size(a2,2)-1,size(X,2)+1);
+D1 = zeros(size(a2,2)-1,size(completeX,2));
 D2 = zeros(size(h,2),size(a2,2));
 
 %one iteration per example
@@ -109,28 +109,24 @@ for t = 1:m
   delta2 = delta2(2:end);
   delta2 = delta2' .* sigmoidGradient(a_1*Theta1');
     
-  %D1 = D1 + delta2'*a_1(:,2:end);
+
   D1 = D1 + delta2'*a_1;
-  %size(delta2')
-  %size(a_1)
-  %size(D1)
-  
-  %D2 = D2 + delta3*a_2(:,2:end);
   D2 = D2 + delta3*a_2;
 
 endfor
 
 finalD1 = (1/m) * D1;
-%size(finalD1)
-finalD2 = (1/m) * D2;
-%size(finalD2)
 
-%Theta1_grad = [zeros(size(finalD1,1),1) finalD1];
-%Theta2_grad = [zeros(size(finalD2,1),1) finalD2];
+finalD2 = (1/m) * D2;
+
 
 Theta1_grad = finalD1;
 Theta2_grad = finalD2;
 
+%Regularization avoiding bias terminal_size
+
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + ( (lambda/m).* Theta1(:,2:end) );
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + ( (lambda/m).* Theta2(:,2:end) );
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
