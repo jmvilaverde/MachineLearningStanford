@@ -25,11 +25,10 @@ h = X*theta;
 % Remember to remove theta 0 to calculate cost function into lambda part
 J = (1/(2*m)) * sum( (h-y).^2 ) + ((lambda/(2*m))*sum(theta(2:size(theta)).^2));
 
-% grad = ( (1/m) * sum((h-y).*X) );
-% grad = ((1/m) * ( X'*(h-y) ))  + ((lambda/m).*theta');
-grad = ( (1/m) * sum((h-y).*X) ) + ((lambda/m).*theta');
-%grad(1) = (1/m) * (X(:,1)'.*(h-y));
-grad(1) = (1/m) * sum((h-y)'*X(:,1));
+
+grad = ( (1/m) * (h-y)'*X ) + ((lambda/m).*theta');
+%grad(1) = (1/m) * sum((h-y)'*X(:,1));
+grad(1) = (1/m) * (h-y)'*X(:,1);
 
 % =========================================================================
 

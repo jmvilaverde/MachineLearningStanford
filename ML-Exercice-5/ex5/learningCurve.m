@@ -56,14 +56,14 @@ error_val   = zeros(m, 1);
 for i = 1:m
   % Get training set
   Xtrain = X(1:i, :);
-  Ytrain = y(1:i, :);
+  ytrain = y(1:i, :);
 
   % Calculate Theta
-  theta = trainLinearReg(Xtrain, Ytrain, lambda);
+  theta = trainLinearReg(Xtrain, ytrain, lambda);
   
   % Calculate J
-  [error_train(i), gradTrain] = linearRegCostFunction(Xtrain, Ytrain, theta, 0);
-  [error_val(i), gradVal] = linearRegCostFunction(Xval, yval, theta, 0);
+  error_train(i) = linearRegCostFunction(Xtrain, ytrain, theta, 0);
+  error_val(i) = linearRegCostFunction(Xval, yval, theta, 0);
   
 endfor
 % -------------------------------------------------------------
