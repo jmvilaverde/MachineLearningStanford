@@ -97,14 +97,19 @@ while ~isempty(email_contents)
     %       str2). It will return 1 only if the two strings are equivalent.
     %
 
-
-
-
-
-
-
-
-
+    %fprintf('Programa pausado. Press enter to continue.\n');
+    %pause;
+    match = strcmp(str, vocabList);
+    word_indices = [word_indices; find(match)];
+    
+%    indexFound = 0;
+%    idx = 1;
+%    while (idx <= length(vocabList) & indexFound == 0)
+%      if strcmp(str, vocabList{idx}) == 1
+%        word_indices = [word_indices; idx];
+%        indexFound = 1;   
+%      endif
+%    endwhile
 
     % =============================================================
 
