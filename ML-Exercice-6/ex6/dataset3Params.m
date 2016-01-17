@@ -23,11 +23,36 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+%predictions = svmPredict(
 
+Cvector = [0.01,0.03,0.1,0.3,1,3,10,30];
+Svector = [0.01,0.03,0.1,0.3,1,3,10,30];
+auxerror = 10^10;
 
+% Loop over Cvector and Svector
+for i = 1:length(Cvector)
+  
+  for j = 1:length(Svector)
 
+    % Create model
+    model = svmTrain(X, y, Cvector(i), @(x1, x2) gaussianKernel(x1, x2, Svector(j)));
+    
+    % Get predictions    
+    predictions = svmPredict(model, Xval);
+    
+    % Calculate error rate
+    error = mean(double(predictions ~= yval));
+    
+    % See if it's better error
+    if error < auxerror
+      auxerror = error;
+      C = Cvector(i);
+      sigma = Svector(j);
+    endif
+  
+  endfor
 
-
+endfor
 
 % =========================================================================
 
